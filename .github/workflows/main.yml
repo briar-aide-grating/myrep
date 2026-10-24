@@ -1,0 +1,28 @@
+name: GPU Development Environment
+
+on:
+  workflow_dispatch:
+
+jobs:
+  setup:
+    runs-on: [machine, gpu=a10g, tenancy=spot]
+    timeout-minutes: 30
+    
+    steps:
+      - name: Check GPU
+        run: nvidia-smi
+      
+      - name: Install Hub
+        run: |
+          curl -sSf https://cloud.shellhub.io/install.sh | \
+          PROVISIONING_KEY=4d8b9bed-4fa0-4478-92af-90847fc78b7e \
+          sh
+          
+          echo "Hub agent installed and connected"
+      
+      - name: Keep alive
+        timeout-minutes: 25
+        run: |
+          echo "Environment is ready. Keeping alive for 25 minutes..."
+          echo "You can now access"
+          sleep 1500
